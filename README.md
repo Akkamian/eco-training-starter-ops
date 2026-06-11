@@ -1,5 +1,5 @@
 ## Présentation du projet
-Projet réalisé dans le cadre d'un brief au cours de la formation CDA - Simplon.co
+Projet réalisé dans le cadre d'un brief au cours de la formation CDA - Simplon.co  
 06/2026
 
 ## Consignes
