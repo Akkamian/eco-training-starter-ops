@@ -16,6 +16,16 @@ Stratégie : récupérer les données de performance de:
 
 ![alt text](./resources/AI_4.png)
 
+
+Task manager de chrome indique au lancement de la page 
+- Utilisation CPU : 5%
+
+- Mémoire : 80 000 ko
+
+au repos :
+- Utilisation CPU : 0.7% à chaque appel réseau
+- Mémoire : 54 500 ko
+
 ## GreenIt
 **Page d'accueil**  
 
@@ -43,39 +53,47 @@ Stratégie : récupérer les données de performance de:
 
 ## Diagnostic des performances d'éco-conception et analyse
 
-Les résultats des outils d'analyse laisse sont plutôt encourageant mais laissent tout de même entrevoir des pistes d'amélioration.
+Les résultats des outils d'analyse sont plutôt encourageant mais laissent tout de même entrevoir des pistes d'amélioration.
 
 Points forts du projet :
 - mode sombre déjà implémenté
 
 Points d'amélioration :
 
-- limitation des requetes réseau
+- Limitation des requetes réseau
 4 appels au backend sont réalisés toutes les 5secondes  
+Requêtes réseau inutiles (4 appels API × 12 fois/minute = 48 req/min)
+
 ```ts
  loadAll();
     const timer = window.setInterval(loadAll, 5000);
     return () => window.clearInterval(timer);
 ```
--> remplacer cette approche par un bouton d'actualisation (fetch des données à la demande)
+  -> remplacer cette approche par un bouton d'actualisation (fetch des données à la demande)
 
-- tous les contenus sont chargés au chargement de la page
--> mise en place d'un lazy loading
--> mise en place d'un chargement à la demande des barchart? 
--> ajout d'une pagination ?
+- Tous les contenus sont chargés au chargement de la page  
+-> mise en place d'un lazy loading  
+-> mise en place d'un chargement à la demande des barchart  
+-> ajout d'une pagination 
 
-- Parcours utilisateur complexe et redondant ? 
+- Parcours utilisateur complexe et redondant  
+-> simplification du parcours  
 
-- cache désactivé en backend (index.ts)
+- Cache désactivé en backend (index.ts)
 sur la route assets : 
 ```ts
   res.setHeader('Cache-Control', 'no-store');
-```
+```  
+-> mettre en cache les ressources statiques
 
-images volumineuses ?
+- Images volumineuses et inutilisées dans /assets
 
-vérifier le mobile first
+- Le css est constuit en desktop first :  
+-> implémenter le mobile first
+
+- utilisation d'une polices inutiles dans un dashboard métier ->  suppression de 'IBM Plex Sans' qui de toute facon n'est pas utilisée
 
 - nombreux console.log backend
 
-- le composant principal 
+- Le composant principal est re-render toutes les 5 secondes avec la mise à jour de states Dashboard, Records, Settings et Analystics.  
+-> utiliser des useMemo pour déclencher le re-render seulement quand les données ont changé.
