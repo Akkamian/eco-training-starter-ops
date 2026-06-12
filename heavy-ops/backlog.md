@@ -59,7 +59,7 @@ Diagnostic ecoconception realise avec Lighthouse, GreenIt-Analysis et EcoIndex l
 - Contexte: En tant qu'**equipe front-end**, je veux **refondre le CSS en adoptant une approche mobile first et en supprimant les declarations inutilisees**, afin de **reduire le poids des feuilles de style et la consommation memoire du rendu navigateur sur tous les terminaux**.
 - Objectif: Reduire la taille du fichier CSS d'au moins 30 % (de ~12 Ko a < 8 Ko) et supprimer le bloc `@media (max-width: 1180px)` au profit de breakpoints progressifs (mobile → tablette → desktop)
 - Bonne pratique d eco-conception ciblee: **CSS optimise et adaptatif** — conception mobile first, suppression des declarations orphelines, polices inutiles retirees
-- KPI associe: Taille du fichier CSS (Ko) mesuree dans le panneau Reseau des DevTools (cible : < 8 Ko) et nombre de declarations CSS inutilisees mesure par l'audit Lighthouse "Unused CSS Rules" (cible : 0)
+- KPI associe: Taille du fichier CSS (Ko) mesurée dans le panneau Reseau des DevTools (cible : < 8 Ko) et nombre de declarations CSS inutilisees mesure par l'audit Lighthouse "Unused CSS Rules" (cible : 0)
 - Repo ou ecran concerne: Frontend `ops.css` (integralite du fichier — toutes les pages)
 - Critere de reussite:
   - La police `'IBM Plex Sans'` est supprimee de la declaration `font-family` (police inutile dans un dashboard metier) ; seule `'Trebuchet MS', sans-serif` est conservee
