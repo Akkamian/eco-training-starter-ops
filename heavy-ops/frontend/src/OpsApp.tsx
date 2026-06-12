@@ -143,7 +143,7 @@ function LoginPage({ onAuthenticate }: { onAuthenticate: (token: string) => void
   );
 }
 
-function Sidebar({ summary, statusSummary }: { summary: SummaryCard[]; statusSummary: StatusSnapshot[] }) {
+function Sidebar({ summary, statusSummary, loadDataFunction }: { summary: SummaryCard[]; statusSummary: StatusSnapshot[]; loadDataFunction: () => void }) {
   return (
     <aside className="ops-sidebar">
       <div className="ops-sidebar-block">
@@ -160,6 +160,10 @@ function Sidebar({ summary, statusSummary }: { summary: SummaryCard[]; statusSum
         <NavLink to="/analytics">Analyse</NavLink>
         <NavLink to="/settings">Reglages</NavLink>
       </nav>
+
+      <button type="button" className="ops-nav-cta" onClick={loadDataFunction}>
+        Actualiser les données
+      </button>
 
       <div className="ops-sidebar-block">
         <p className="ops-eyebrow">Repere rapide</p>
@@ -630,13 +634,11 @@ export default function OpsApp() {
   const [settings, setSettings] = useState<SettingsPayload | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsPayload | null>(null);
 
-  useEffect(() => {
+  const loadData = () => {
     if (!sessionToken) {
       return;
     }
-
-    function loadAll() {
-      Promise.all([
+    Promise.all([
         fetchJson<DashboardPayload>('/api/dashboard'),
         fetchJson<RecordRow[]>('/api/records'),
         fetchJson<SettingsPayload>('/api/settings'),
@@ -647,11 +649,10 @@ export default function OpsApp() {
         setSettings(settingsPayload);
         setAnalytics(analyticsPayload);
       });
-    }
+  };
 
-    loadAll();
-    const timer = window.setInterval(loadAll, 5000);
-    return () => window.clearInterval(timer);
+  useEffect(() => {
+    loadData();
   }, [sessionToken]);
 
   const statusSummary = useMemo<StatusSnapshot[]>(() => {
@@ -717,7 +718,7 @@ export default function OpsApp() {
 
   return (
     <div className="ops-app">
-      <Sidebar summary={dashboard.summary} statusSummary={statusSummary} />
+      <Sidebar summary={dashboard.summary} statusSummary={statusSummary} loadDataFunction={loadData} />
       <main className="ops-content">
         <Routes>
           <Route
